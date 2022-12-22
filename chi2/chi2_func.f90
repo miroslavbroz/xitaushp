@@ -163,7 +163,6 @@ if (i1st.eq.0) then
 
   i1st = 0
 endif
-
 !
 ! deform shape (only r, NOT theta, phi)
 !
@@ -174,9 +173,11 @@ faces2 = faces
 
 call write_node("shape2.node", nodes2)
 call write_face("shape2.face", faces2)
-
-call subdivide(nodes2, faces2, nodesforchi, facesforchi)
-!call subdivide(nodes3, faces3, nodes4, faces4)
+!
+! subdivide twice 
+!
+call subdivide(nodes2, faces2, nodes3, faces3)
+call subdivide(nodes3, faces3, nodesforchi, facesforchi)
 
 call write_node("shape3.node", nodesforchi)
 call write_face("shape3.face", facesforchi)
