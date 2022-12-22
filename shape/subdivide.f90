@@ -71,6 +71,9 @@ enddo  ! i
 call edge(nodes, faces, edges)
 call flip(edges, faces2, faces3)
 
+deallocate(edges)
+deallocate(faces2)
+
 end subroutine subdivide
 
 ! Find neighboring nodes of a node.

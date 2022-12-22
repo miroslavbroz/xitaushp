@@ -63,6 +63,7 @@ call write_edge("output.twice", twice)  ! dbg
 call write_edge("output.edge", edges)  ! dbg
 
 deallocate(twice)
+deallocate(id)
 
 end subroutine edge
 

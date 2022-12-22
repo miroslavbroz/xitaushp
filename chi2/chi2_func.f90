@@ -39,19 +39,16 @@ double precision, dimension(OUTMAX), save :: tout
 double precision, dimension(OUTMAX,NBODMAX,3), save :: rb, vb, rh, vh
 
 ! variables for controlling the shape
-integer, parameter :: SHPMAX = 100
-double precision, dimension(SHPMAX) :: R_shp
-double precision, dimension(:,:), pointer, save :: nodes, nodes2, nodes3
-integer, dimension(:,:), pointer, save :: faces, faces2, faces3
+double precision, dimension(NDIMMAX) :: R_shp
+double precision, dimension(:,:), pointer, save :: nodes, nodes2, nodes3, nodes4, nodes5
+integer, dimension(:,:), pointer, save :: faces, faces2, faces3, faces4, faces5
 
 ! internal variables
 integer :: i, j, k, l, ierr, iu=10
 integer, save :: i1st=0
 double precision :: chi2
 
-!
 ! get both free and fixed parameters
-!
 
 j = 0
 do i = 1, nparam
@@ -64,9 +61,8 @@ enddo
 write(*,'(a,$)') "# x() array:"
 write(*,*) (x(i), i=1,ndim)
 
-!
 ! parameters -> variables, arrays for easy manipulation
-!
+
 j = 0
 do i = 1, nshp
   j = j+1
@@ -111,9 +107,8 @@ endif
 
 if (i1st.eq.0) then
 
-!
 ! read previous xitau output
-!
+
   open(unit=iu,file="out_JDATE_barycentric.dat",status="unknown")
 
   i = 0
@@ -131,9 +126,9 @@ if (i1st.eq.0) then
 
   close(iu)
   NOUT = i-1
-!
+
 ! convert to heliocentric (1-centric) coordinates
-!
+
   do i = 1, NOUT
     do j = 1, nbod
       do k = 1, 3
@@ -142,45 +137,67 @@ if (i1st.eq.0) then
       enddo
     enddo
   enddo
-!
+
 ! read control shape
-!
+
   call read_node("input.node", nodes)
   call read_face("input.face", faces)
-
-  call write_node("shape1.node", nodes)
-  call write_face("shape1.face", faces)
 
   if (size(nodes,1).ne.nshp) then
     write(*,*) "chi2_func.f: Error number of nodes ", size(nodes,1), ".ne.nshp = ", nshp
     stop
   endif
-!
+
+  if (debug) then
+    call write_node("shape1.node", nodes)
+    call write_face("shape1.face", faces)
+  endif
+
 ! allocation
-!
+
   allocate(nodes2(size(nodes,1),size(nodes,2)))
   allocate(faces2(size(faces,1),size(faces,2)))
 
   i1st = 0
 endif
-!
+
 ! deform shape (only r, NOT theta, phi)
-!
+
 do i = 1,size(nodes,1)
   nodes2(i,:) = R_shp(i) * nodes(i,:)
 enddo
 faces2 = faces
 
-call write_node("shape2.node", nodes2)
-call write_face("shape2.face", faces2)
-!
-! subdivide twice 
-!
-call subdivide(nodes2, faces2, nodes3, faces3)
-call subdivide(nodes3, faces3, nodesforchi, facesforchi)
+if (debug) then
+  call write_node("shape2.node", nodes2)
+  call write_face("shape2.face", faces2)
+endif
 
-call write_node("shape3.node", nodesforchi)
-call write_face("shape3.face", facesforchi)
+! subdivide several times
+
+if (nsub.eq.1) then
+  call subdivide(nodes2, faces2, nodesforchi, facesforchi)
+else if (nsub.eq.2) then
+  call subdivide(nodes2, faces2, nodes3, faces3)
+  call subdivide(nodes3, faces3, nodesforchi, facesforchi)
+else if (nsub.eq.3) then
+  call subdivide(nodes2, faces2, nodes3, faces3)
+  call subdivide(nodes3, faces3, nodes4, faces4)
+  call subdivide(nodes4, faces4, nodesforchi, facesforchi)
+else if (nsub.eq.4) then
+  call subdivide(nodes2, faces2, nodes3, faces3)
+  call subdivide(nodes3, faces3, nodes4, faces4)
+  call subdivide(nodes4, faces4, nodes5, faces5)
+  call subdivide(nodes5, faces5, nodesforchi, facesforchi)
+else
+  write(*,*) 'Error: number of subdivisions nsub = ', nsub, '.gt.4'
+  stop
+endif
+
+if (debug) then
+  call write_node("shape3.node", nodesforchi)
+  call write_face("shape3.face", facesforchi)
+endif
 
 lns = 0.d0  ! sum of ln sigma_i (for MCMC)
 
@@ -216,6 +233,17 @@ write(iu,*) (x_param(j), j = 1,nparam), &
 close(iu)
 
 chi2_func = chi2
+
+! deallocate
+
+deallocate(nodesforchi)
+deallocate(facesforchi)
+if (nsub.eq.2) deallocate(nodes3)
+if (nsub.eq.2) deallocate(faces3)
+if (nsub.eq.3) deallocate(nodes4)
+if (nsub.eq.3) deallocate(faces4)
+if (nsub.eq.4) deallocate(nodes5)
+if (nsub.eq.4) deallocate(faces5)
 
 return
 end function chi2_func

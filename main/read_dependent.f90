@@ -23,6 +23,11 @@ write(*,*) "# nshp: "
 read(*,*,err=990,end=990) nshp
 write(*,*) "# nshp = ", nshp
 
+if (nshp.gt.NDIMMAX) then
+  write(*,*) "Error nshp = ", nshp, ".gt. NDIMMAX = ", NDIMMAX
+  stop
+endif
+
 write(*,*) "# nbod : "
 read(*,*,err=990,end=990) nbod
 write(*,*) "# nbod = ", nbod
@@ -169,6 +174,10 @@ write(*,*) "# silh_factor = ", silh_factor
 write(*,*) "# spectral_slope : "
 read(*,*,err=990,end=990) spectral_slope
 write(*,*) "# spectral_slope = ", spectral_slope
+
+write(*,*) "# nsub : "
+read(*,*,err=990,end=990) nsub
+write(*,*) "# nsub = ", nsub
 
 write(*,*) "# use_planck : "
 read(*,*,err=990,end=990) use_planck

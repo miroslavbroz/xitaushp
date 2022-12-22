@@ -15,9 +15,10 @@
       logical variable(NDIMMAX)
       real*8 lns
 
-      integer nbod, nband, nshp
+      integer nbod, nband
       integer iband_LC(BANDMAX)
       integer geometry
+      integer nshp, nsub
       real*8 T0
       real*8 R_star(NBODMAX), T_eff(NBODMAX), Lum(NBODMAX)
       real*8 log_g(NBODMAX), v_rot(NBODMAX), P_rot(NBODMAX)
@@ -85,7 +86,8 @@
      &  file_SKY, file_TTV, file_RV, file_ECL, file_VIS, file_CLO,      &
      &  file_LC, file_SYN, file_synth, file_SED, file_absol, file_AO,   &
      &  file_SKY2, file_SKY3, file_OCC,                                 &
-     &  ndim, nparam, nbod, nband, nshp, iband_LC, geometry,            &
+     &  ndim, nparam, nbod, nband, iband_LC, geometry,                  &
+     &  nshp, nsub,                                                     &
      &  n_SKY, n_TTV, n_RV, n_ECL, n_VIS, n_CLO,                        &
      &  n_T3, n_LC, n_SYN, n_SED, n_AO, n_SKY2, n_SKY3, n_OCC, n_fit,   &
      &  use_planck, use_filters, use_limbdark, use_pyterpol,            &
