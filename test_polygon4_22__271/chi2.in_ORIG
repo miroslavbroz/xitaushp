@@ -1,0 +1,85 @@
+# shapesimplex.in
+# nparam number of paramters
+# x() vector:
+#
+#  Rshp(1) Rshp(2) .. Rshp(nshp)
+#  Rstar1 Rstar2
+#  Prot1 Prot2
+#  polel1 polel2
+#  poleb1 poleb2
+#  phi01 phi02
+#  albedo1 albedo2
+#  B0 minh ming bartheta
+#  ...
+#
+#
+58
+
+  0.59802222643794045        1.0628544024756308       0.92963890408731709        1.5412608368451539       0.48533221768211243       0.87812306304227261       0.80395801761153185       0.85308602801085898       0.82161421876433227       0.86423140907593143       0.75597255673313823       0.76484017833500817       0.85982976347839657       0.85550277421343224       0.83720420318420297       0.95225324646505660       0.96198283926733685       0.97637730050954952       0.63755460557225907       0.93304342653957839        1.0789772566562601       0.68529626668458643       0.80597186239735885       0.86812478586957342       0.61538797009171031        1.0430978908897686       0.92101393786344099        1.2071658581941653       0.87237006504179004        1.0826739612038985        1.2769999283052258       0.81304537949762457       0.90879546938948974       0.80661772793209707       0.86235054311616788       0.85324021411678430       0.95937994237386492       0.87263164490583689       0.80504636616982894       0.99486000763829696       0.97241302341468183       0.94244031174295129       0.99973280923046381       0.95513015351315644       0.17284169094661644        3.5957133484956483        194.38008681786849        195.63332303822017        3.3487016602603994        2.2330967813197264        84.480883709462645        15.132507323943688       0.41959260643609697       0.33694523791510267        1.7339264964538275        2.9501425956512659E-002  -1.9708597556396493E-002   0.0000000000000000                0           0           0           0           0           0           0           0           0           0       12600           0           0           0       12600   0.0000000000000000        0.0000000000000000        0.0000000000000000        0.0000000000000000        0.0000000000000000        0.0000000000000000        0.0000000000000000        0.0000000000000000        0.0000000000000000        0.0000000000000000        289.29116379678095        0.0000000000000000        0.0000000000000000        0.0000000000000000        0.0000000000000000        289.29116379678095     
+
+2459546.69210264	! fixed (dependent) parameters: T0 [JD]; 1st Trappist LC point
+
+42			! nshp number of shape parameters
+
+2			! nbod number of bodies; a list of 2*nbod+4 files with observational data (or '-' if no data)...
+-Sky1.dat
+-Sky2.dat
+-RV1.dat_gamma
+-RV2.dat_gamma
+-Omc12.dat
+-Ecl12.dat
+-Vis.dat_fake
+-Clo.dat_fake
+-Spectra.dat_norect_no4471
+-1.syn
+-2.syn
+-Sed.dat
+-1.abs
+-2.abs
+AO1.dat
+-Sky_differential.dat_minusuv
+-Sky_angularvelocity.dat
+-Occ.dat
+
+0			! nband number of photometric bands; a list of bands and lightcurve files; 7 .. Johnson V, 15 .. Rc
+
+4                     ! geometry of the system: 0 ... hierarchical ((1+2)+3)+4, 1 ... two pairs ((1+2)+(3+4))+5, 4 ... hierarchical w. P,loge,varpi,lambda, 5 ... twopairs w. dtto
+
+0.0 0.0			! m_min(nbod) [M_S] minimum masses
+10.0 10.0		! m_max(nbod) [M_S] maximum masses
+F F			! use_hec88(nbod) use Harmanec (1988) to constrain components (i.e. use only T_eff as a parameter!)
+
+0.001			! lightcurve_timestep [day] timestep of synthetic lightcurve; set to 0.0 if all observed points should be computed
+0.100			! approx_eclipse_duration [day] approximate eclipse duration for eclipse detection
+399.e-9 675.e-9		! lambda1 lambda2 [metres] wavelength range for rectified synthetic spectra
+321.e-9 998.e-9		! lambda3 lambda4 [metres] range for absolute spectra (to fit SED)
+10.0 0.001 0.1 0.0001   ! pyterpol_Delta's for T_eff [K], log_g [cgs], v_rot [km/s], metal [1]
+
+0.4			! silh_factor [] signal = factor*max(signal) to compute a silhouette
+0.45			! spectral_slope [1] reflectance = 1.0 + slope*(lambda_eff/mu-0.55) to compute LC
+
+T			! use_planck [T|F] use Planck approximation; otherwise use absolute synthetic spectra (*.abs files)
+F			! use_filters [T|F] use filter transmissions to compute SED; otherwise use effective wavelengths and bandpasses
+F			! use_limbdark [T|F] use linear limb-darkening coefficients for visibility |V|^2 calculation
+F			! use_pyterpol [T|F] use Pyterpol (Nemravova et al. 2016) to generate synthetic spectra on-the-fly
+T			! use_vardist [T|F] use variable distance/geometry (in solar system)
+F			! use_varpole [T|F] use variable pole of body 1 (in solar system)
+T			! use_multipole [T|F] use multipole expansion of body 1
+F			! use_bruteforce [T|F] use shape of body 1 and brute-force algorithm
+F                       ! use_oblat [T|F] use oblateness (Fabrycky 2010)
+T                       ! use_tides [T|F] use tides (Mignard 1979)
+T                       ! use_tides2 [T|F] use external tides
+F                       ! use_ppn [T|F] use parametrized post-Newtonian approximation
+T                       ! use_polygon [T|F] use lc_polygon to compute the lightcurve (instead of wd)
+T                       ! use_zero [T|F] use analytical zero-point(s) to the lightcurve(s)
+
+1.0 1.0 1.0 1.0  1.0 1.0 1.0  1.0 1.0 1.0  1.0 1.0 1.0 1.0	! w_SKY w_RV w_TTV w_ECL w_VIS w_CLO w_T3 w_LC w_SYN w_SED w_AO w_SKY2 w_SKY3 w_OCC weights for chi^2 computation
+1.e-8			! eps_BS for Bulirsch-Stoer integrator
+T			! debugging output?
+T			! debug integrator?
+
+
+  15  Lc_Rc1.dat
+  15  Lc_Rc2.dat
+  15  Lc_Rc3.dat
+  15  Lc_Rc4.dat

@@ -1,0 +1,27 @@
+&input
+
+f_node1 = 'input.22.node'
+f_face1 = 'input.22.face'
+f_node2 = 'sphere.1.node'
+f_face2 = 'sphere.1.face'
+
+unit1 = 76.5d3   ! m
+unit2 = 15.d3  ! m; approx. Linus
+
+pole_l_ = 195.63332303822017, 195.63332303822017   ! deg
+pole_b_ = 2.2330967813197264, 2.2330967813197264   ! deg
+P_rot_  = 0.17284167583333299, 0.17284167583333299 ! day; i.e., not in Ferrais (2022)!
+Tmin    = 2436258.0000000000, 2436258.0000000000   ! JD; TDB (not UTC)
+phi0_   = 0.0, 0.0                                 ! deg; for unrotated 22.1.node
+A_w     = 0.50d0, 0.50d0                           ! 1; single-scattering albedo
+
+law = 'Hapke'
+
+debug_polygon = .true.
+!debug_polygon = .false.
+
+/ ! end-of-input
+
+!Tmin   = 2436257.9900000000, 2436257.9900000000   ! JD; TDB (not UTC); adjusted due to LC ERROR!!
+!phi0   = 80.834909108281451, 80.834909108281451   ! deg; for rotated origoutput.node
+

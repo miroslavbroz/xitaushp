@@ -1,0 +1,110 @@
+# shapesubplex.in
+# nparam number of paramters
+# x() vector:
+#
+#  Rshp(1) Rshp(2) .. Rshp(nshp)
+#  Rstar1 Rstar2
+#  Prot1 Prot2
+#  polel1 polel2
+#  poleb1 poleb2
+#  phi01 phi02
+#  albedo1 albedo2
+#  B0 minh ming bartheta
+#  ...
+#
+# e() vector
+# variable() vector
+#
+58
+
+   0.60663929440546160        1.0644187597648556       0.95821509231492663        1.5501266879397528       0.24885996468138255       0.89171544925495771       0.82614909420716165       0.87023625313814623       0.82711347076919184       0.80283962531199471       0.75122336120135780       0.77580494399689226       0.87216663388959503       0.85377606713307741       0.84679362017968507       0.96126784831972623       0.96675282642729599       0.96595949631529399       0.72638717480743153       0.95460062191416784        1.0932599174657629       0.71284487852360989       0.80067123985723765       0.86254611129626668       0.61844875506199781        1.0503809764270726       0.90221714243215934        1.2887665499516303       0.84475465450366760        1.1027105261237311        1.2531185807642922       0.80393381413493348       0.91209715820130044       0.79712364060817509       0.86327344280803286       0.87619244219698367       0.97371800981069045       0.85984511193333446       0.80427891729370071        1.0085384335512029       0.96839148670050545       0.93309812301107364       0.99973280923046381       0.95513015351315644       0.17284169094661644        3.5957133484956483        195.08755925381053        195.63332303822017        3.7531927863083836        2.2330967813197264        84.393701341100524        15.132507323943688       0.41959260643609697       0.33694523791510267        1.7339264964538275        2.9501425956512659E-002  -1.9708597556396493E-002   0.0000000000000000                0           0           0           0           0           0           0           0           0           0       12600           0           0           0       12600   0.0000000000000000        0.0000000000000000        0.0000000000000000        0.0000000000000000        0.0000000000000000        0.0000000000000000        0.0000000000000000        0.0000000000000000        0.0000000000000000        0.0000000000000000        273.59735842797716        0.0000000000000000        0.0000000000000000        0.0000000000000000        0.0000000000000000        273.59735842797716     
+
+0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1
+0.1     0.1
+0.01    0.01
+10.0    10.0
+10.0    10.0
+10.0    10.0
+0.1     0.1
+0.1     0.01  0.01  1.0
+
+T T T T T T T T T T T T T T T T T T T T T T T T T T T T T T T T T T T T T T T T T T
+F F
+F F
+T F
+T F
+T F
+F F
+F F F F
+
+2459546.69210264	! fixed (dependent) parameters: T0 [JD]; 1st Trappist LC point
+
+42			! nshp number of shape parameters
+
+2			! nbod number of bodies; a list of 2*nbod+4 files with observational data (or '-' if no data)...
+-Sky1.dat
+-Sky2.dat
+-RV1.dat_gamma
+-RV2.dat_gamma
+-Omc12.dat
+-Ecl12.dat
+-Vis.dat_fake
+-Clo.dat_fake
+-Spectra.dat_norect_no4471
+-1.syn
+-2.syn
+-Sed.dat
+-1.abs
+-2.abs
+AO1.dat
+-Sky_differential.dat_minusuv
+-Sky_angularvelocity.dat
+-Occ.dat
+
+0			! nband number of photometric bands; a list of bands and lightcurve files; 7 .. Johnson V, 15 .. Rc
+
+4                     ! geometry of the system: 0 ... hierarchical ((1+2)+3)+4, 1 ... two pairs ((1+2)+(3+4))+5, 4 ... hierarchical w. P,loge,varpi,lambda, 5 ... twopairs w. dtto
+
+0.0 0.0			! m_min(nbod) [M_S] minimum masses
+10.0 10.0		! m_max(nbod) [M_S] maximum masses
+F F			! use_hec88(nbod) use Harmanec (1988) to constrain components (i.e. use only T_eff as a parameter!)
+
+0.001			! lightcurve_timestep [day] timestep of synthetic lightcurve; set to 0.0 if all observed points should be computed
+0.100			! approx_eclipse_duration [day] approximate eclipse duration for eclipse detection
+399.e-9 675.e-9		! lambda1 lambda2 [metres] wavelength range for rectified synthetic spectra
+321.e-9 998.e-9		! lambda3 lambda4 [metres] range for absolute spectra (to fit SED)
+10.0 0.001 0.1 0.0001   ! pyterpol_Delta's for T_eff [K], log_g [cgs], v_rot [km/s], metal [1]
+
+0.4			! silh_factor [] signal = factor*max(signal) to compute a silhouette
+0.45			! spectral_slope [1] reflectance = 1.0 + slope*(lambda_eff/mu-0.55) to compute LC
+3			! nsub number of sub-divisions
+
+T			! use_planck [T|F] use Planck approximation; otherwise use absolute synthetic spectra (*.abs files)
+F			! use_filters [T|F] use filter transmissions to compute SED; otherwise use effective wavelengths and bandpasses
+F			! use_limbdark [T|F] use linear limb-darkening coefficients for visibility |V|^2 calculation
+F			! use_pyterpol [T|F] use Pyterpol (Nemravova et al. 2016) to generate synthetic spectra on-the-fly
+T			! use_vardist [T|F] use variable distance/geometry (in solar system)
+F			! use_varpole [T|F] use variable pole of body 1 (in solar system)
+T			! use_multipole [T|F] use multipole expansion of body 1
+F			! use_bruteforce [T|F] use shape of body 1 and brute-force algorithm
+F                       ! use_oblat [T|F] use oblateness (Fabrycky 2010)
+T                       ! use_tides [T|F] use tides (Mignard 1979)
+T                       ! use_tides2 [T|F] use external tides
+F                       ! use_ppn [T|F] use parametrized post-Newtonian approximation
+T                       ! use_polygon [T|F] use lc_polygon to compute the lightcurve (instead of wd)
+T                       ! use_zero [T|F] use analytical zero-point(s) to the lightcurve(s)
+
+1.0 1.0 1.0 1.0  1.0 1.0 1.0  1.0 1.0 1.0  1.0 1.0 1.0 1.0	! w_SKY w_RV w_TTV w_ECL w_VIS w_CLO w_T3 w_LC w_SYN w_SED w_AO w_SKY2 w_SKY3 w_OCC weights for chi^2 computation
+1.e-8			! eps_BS for Bulirsch-Stoer integrator
+F			! debugging output?
+F			! debug integrator?
+
+1.0e-3  ! tol1, 1st tolerance for simplex
+1.0e-8  ! tol2, min. tolerance (0.0 .. machine precision)
+0.66     ! tolfact, multiplicative factor for next sub-space(s)
+
+50      ! iter1, 1st number of iterations
+10000   ! iter2, max. total number of iterations
+5      ! iterincr, increment for next sub-space(s)
+
+
