@@ -416,9 +416,10 @@ if (debug_polygon) then
   write(*,*) 'no = ', no
   write(*,*) 'cpu_time = ', t2-t1, ' s'  ! dbg
 
-  if ((no.eq.1).or.(no.eq.49).or.(no.eq.50)) then
+!  if ((no.eq.1).or.(no.eq.49).or.(no.eq.50)) then
 !  if ((no.ge.1).and.(no.le.99)) then
 !  if ((no.ge.480).and.(no.le.482)) then
+  if ((no.eq.171)) then
     write(str,'(i0.2)') no
     call write_node("output.node." // trim(str), nodes)
     call write_face("output.face." // trim(str), faces)
@@ -434,9 +435,10 @@ if (debug_polygon) then
     call write_poly("output.poly4." // trim(str), polys4)
     call write_poly("output.poly5." // trim(str), polys5)
 
-!    call write1("output.f." // trim(str), f)
-!    call write1("output.f_L." // trim(str), f_L)
-!    call write1("output.mu_i." // trim(str), mu_i)
+    call write1("output.f." // trim(str), f)
+    call write1("output.f_L." // trim(str), f_L)
+    call write1("output.mu_i." // trim(str), mu_i)
+    call write1("output.mu_e." // trim(str), mu_e)
     call write1("output.surf." // trim(str), surf)
     call write1("output.Phi_i." // trim(str), Phi_i)
     call write1("output.Phi_e." // trim(str), Phi_e)

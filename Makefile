@@ -27,6 +27,23 @@ obj = \
   misc/gser.o \
   simplex/amoeba.o \
   simplex/amotry.o \
+  subplex/calcc.o \
+  subplex/dasum.o \
+  subplex/daxpy.o \
+  subplex/dcopy.o \
+  subplex/dist.o \
+  subplex/dscal.o \
+  subplex/evalf.o \
+  subplex/fstats.o \
+  subplex/newpt.o \
+  subplex/order.o \
+  subplex/partx.o \
+  subplex/setstp.o \
+  subplex/simplx.o \
+  subplex/sortd.o \
+  subplex/start.o \
+  subplex/subopt.o \
+  subplex/subplx.o \
 
 obj90 = \
   misc/const.o \
@@ -89,12 +106,15 @@ inc = \
   simplex/dependent.inc \
   filters/filters.inc \
 
-all: main/chi2 main/shapesimplex
+all: main/chi2 main/shapesimplex main/shapesubplex
 
 main/chi2: main/chi2.f90 $(obj90) $(obj) $(objc) $(inc)
 	$(f90) $(opt) $(obj) $(obj90) $(objc) -o $@ $< $(lib)
 
 main/shapesimplex: main/shapesimplex.f90 $(obj90) $(obj) $(objc) $(inc)
+	$(f90) $(opt) $(obj) $(obj90) $(objc) -o $@ $< $(lib)
+
+main/shapesubplex: main/shapesubplex.f90 $(obj90) $(obj) $(objc) $(inc)
 	$(f90) $(opt) $(obj) $(obj90) $(objc) -o $@ $< $(lib)
 
 $(obj90) : %.o:%.f90 $(inc)
