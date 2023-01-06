@@ -90,6 +90,10 @@ write(*,*) "# file_AO : "
 read(*,10,err=990,end=990) file_AO
 write(*,*) "# file_AO = ", trim(file_AO)
 
+write(*,*) "# file_AO2 : "
+read(*,10,err=990,end=990) file_AO2
+write(*,*) "# file_AO2 = ", trim(file_AO2)
+
 write(*,*) "# file_SKY2 : "
 read(*,10,err=990,end=990) file_SKY2
 write(*,*) "# file_SKY2 = ", trim(file_SKY2)
@@ -234,8 +238,11 @@ write(*,*) "# use_polygon = ", use_polygon
 read(*,*,err=990,end=990) use_zero
 write(*,*) "# use_zero = ", use_zero
 
-write(*,*) "# w_SKY w_RV w_TTV w_ECL w_VIS w_CLO w_T3 w_LC w_SYN w_SED w_AO w_SKY2 w_SKY3 w_OCC : "
-read(*,*,err=990,end=990) w_SKY, w_RV, w_TTV, w_ECL, w_VIS, w_CLO, w_T3, w_LC, w_SYN, w_SED, w_AO, w_SKY2, w_SKY3, w_OCC
+read(*,*,err=990,end=990) use_adam
+write(*,*) "# use_adam = ", use_adam
+
+write(*,*) "# w_SKY w_RV w_TTV w_ECL w_VIS w_CLO w_T3 w_LC w_SYN w_SED w_AO w_AO2, w_SKY2 w_SKY3 w_OCC : "
+read(*,*,err=990,end=990) w_SKY, w_RV, w_TTV, w_ECL, w_VIS, w_CLO, w_T3, w_LC, w_SYN, w_SED, w_AO, w_AO2, w_SKY2, w_SKY3, w_OCC
 write(*,*) "# w_SKY = ", w_SKY
 write(*,*) "# w_RV = ", w_RV
 write(*,*) "# w_TTV = ", w_TTV
@@ -247,6 +254,7 @@ write(*,*) "# w_LC = ", w_LC
 write(*,*) "# w_SYN = ", w_SYN
 write(*,*) "# w_SED = ", w_SED
 write(*,*) "# w_AO = ", w_AO
+write(*,*) "# w_AO2 = ", w_AO2
 write(*,*) "# w_SKY2 = ", w_SKY2
 write(*,*) "# w_SKY3 = ", w_SKY3
 write(*,*) "# w_OCC = ", w_OCC

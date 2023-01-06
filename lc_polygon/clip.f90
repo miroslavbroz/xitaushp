@@ -2,10 +2,6 @@
 ! Clip polygons using Vatti (1992) algorithm; from Clipper2 library.
 ! Miroslav Broz (miroslav.broz@email.cz), Dec 20th 2022
 
-! Note: If there is no clip, it is necessary to revert the polygon!
-! Otherwise, a non-clipped polygon (polys4->polys5) has an incorrect
-! orientation, if it was clipped previously (polys2->polys3).
-
 module clip_module
 
 contains
@@ -34,7 +30,7 @@ integer, dimension(:), pointer, intent(inout) :: clips
 integer :: i, j, k, l, c, m
 type(polystype) :: poly_i, poly_j, poly_k
 
-double precision, dimension(:,:), pointer, save :: boxes
+double precision, dimension(:,:), pointer :: boxes
 double precision, parameter :: EPS = 1.0d-6
 
 call boundingbox(polys2, boxes)
@@ -61,11 +57,6 @@ do i = 1, size(polys2,1)
 
     include 'c1.inc'
   enddo
-
-  if ((c.eq.0).and.(clips(i).lt.1000)) then
-    call revert(poly_i)
-    c = c+1000
-  endif
 
   polys3(i) = poly_i
   clips(i) = clips(i)+c

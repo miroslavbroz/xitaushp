@@ -2,6 +2,8 @@
 // Clip polygon in C++ library.
 // Miroslav Broz (miroslav.broz@email.cz), Nov 5th 2022
 
+// Note: On output, the polygon must be reverted (C -> F90).
+
 #include <cstdlib>
 #include "../clipper2/clipper.h"
 
@@ -73,9 +75,10 @@ void clip_in_c(polystype* poly_i, polystype* poly_j, polystype* poly_k) {
   for (int i=0; i<path_k.size(); i++) {
     (*poly_k).s[i].c = path_k[i].size();
     for (int j=0; j<path_k[i].size(); j++) {
-      (*poly_k).s[i].p[0][j] = path_k[i][j].x;
-      (*poly_k).s[i].p[1][j] = path_k[i][j].y;
-      (*poly_k).s[i].p[2][j] = 0.0;
+      int k = path_k[i].size()-j-1;
+      (*poly_k).s[i].p[0][k] = path_k[i][j].x;
+      (*poly_k).s[i].p[1][k] = path_k[i][j].y;
+      (*poly_k).s[i].p[2][k] = 0.0;
     }
   }
 

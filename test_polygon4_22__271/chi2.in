@@ -37,11 +37,16 @@
 -1.abs
 -2.abs
 AO1.dat
+AO2.dat
 -Sky_differential.dat_minusuv
 -Sky_angularvelocity.dat
 -Occ.dat
 
-0			! nband number of photometric bands; a list of bands and lightcurve files; 7 .. Johnson V, 15 .. Rc
+4			! nband number of photometric bands; a list of bands and lightcurve files; 7 .. Johnson V, 15 .. Rc
+  15  Lc_Rc1.dat
+  15  Lc_Rc2.dat
+  15  Lc_Rc3.dat
+  15  Lc_Rc4.dat
 
 4                     ! geometry of the system: 0 ... hierarchical ((1+2)+3)+4, 1 ... two pairs ((1+2)+(3+4))+5, 4 ... hierarchical w. P,loge,varpi,lambda, 5 ... twopairs w. dtto
 
@@ -73,14 +78,13 @@ T                       ! use_tides2 [T|F] use external tides
 F                       ! use_ppn [T|F] use parametrized post-Newtonian approximation
 T                       ! use_polygon [T|F] use lc_polygon to compute the lightcurve (instead of wd)
 T                       ! use_zero [T|F] use analytical zero-point(s) to the lightcurve(s)
+T			! use_adam [T|F] use adam-like synthetic images, u. lc_polygon
 
-1.0 1.0 1.0 1.0  1.0 1.0 1.0  1.0 1.0 1.0  1.0 1.0 1.0 1.0	! w_SKY w_RV w_TTV w_ECL w_VIS w_CLO w_T3 w_LC w_SYN w_SED w_AO w_SKY2 w_SKY3 w_OCC weights for chi^2 computation
+1.0 1.0 1.0 1.0  1.0 1.0 1.0  1.0 1.0 1.0  1.0 1.0 1.0 1.0 1.0	! w_SKY w_RV w_TTV w_ECL w_VIS w_CLO w_T3 w_LC w_SYN w_SED w_AO w_AO2 w_SKY2 w_SKY3 w_OCC weights for chi^2 computation
 1.e-8			! eps_BS for Bulirsch-Stoer integrator
 T			! debugging output?
 T			! debug integrator?
 
 
-  15  Lc_Rc1.dat
-  15  Lc_Rc2.dat
-  15  Lc_Rc3.dat
-  15  Lc_Rc4.dat
+
+

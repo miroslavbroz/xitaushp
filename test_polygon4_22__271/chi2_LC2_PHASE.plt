@@ -1,0 +1,1 @@
+../plt/chi2_LC2_PHASE.plt

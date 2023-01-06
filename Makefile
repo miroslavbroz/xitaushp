@@ -83,16 +83,21 @@ obj90 = \
   lc_polygon/uvw.o \
   lc_polygon/write1.o \
   lc_polygon/write_poly.o \
+  lc_polygon/xyz.o \
   lc_polygon/centre_of_p.o \
   lc_polygon/normal_of_p.o \
   lc_polygon/shadowing_of_p.o \
   lc_polygon/rotate_of_p.o \
   lc_polygon/lc_polygon1.o \
+  adam/intersect_AB_l.o \
+  adam/inside_polygon.o \
+  adam/raytrace.o \
   chi2/read_ephemeris.o \
   chi2/write_poles.o \
   chi2/read_AO.o \
   chi2/read_LC2.o \
   chi2/chi2_func_AO.o \
+  chi2/chi2_func_AO2.o \
   chi2/chi2_func_LC2.o \
   chi2/chi2_func.o \
   main/read_dependent.o \

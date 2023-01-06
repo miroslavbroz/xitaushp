@@ -25,6 +25,7 @@ use read_node_module
 use write_face_module
 use write_node_module
 use chi2_func_AO_module
+use chi2_func_AO2_module
 use chi2_func_LC2_module
 
 implicit none
@@ -206,30 +207,33 @@ lns = 0.d0  ! sum of ln sigma_i (for MCMC)
 !
 
 !  1. adaptive-optics imaging (u. silhouettes)
-!  2. light curve (u. lc_polygon algorithm)
+!  2. adaptive-optics imaging (u. lc_polygon algorithm)
+!  3. light curve (u. lc_polygon algorithm)
 
 call chi2_func_AO(chi2_AO, n_AO)
 
+call chi2_func_AO2(NOUT, tout, rh, vh, chi2_AO2, n_AO2)
+
 call chi2_func_LC2(NOUT, tout, rh, vh, chi2_LC, n_LC)
 
-n_fit = n_LC + n_AO
+n_fit = n_LC + n_AO + n_AO2
 
-chi2 = w_LC*chi2_LC + w_AO*chi2_AO
+chi2 = w_LC*chi2_LC + w_AO*chi2_AO + w_AO2*chi2_AO2
 
 write(*,'(a,$)') "# n values: "
-write(*,*) n_LC, n_AO, n_fit
+write(*,*) n_LC, n_AO, n_AO2, n_fit
 
 write(*,'(a,$)') "# chi^2 values: "
-write(*,*) chi2_LC, chi2_AO, chi2
+write(*,*) chi2_LC, chi2_AO, chi2_AO2, chi2
 
 ! write hi-precision output
 
 open(unit=iu, file="chi2_func.tmp", access="append")
 write(iu,*) (x_param(j), j = 1,nparam), &
   n_SKY, n_RV, n_TTV, n_ECL, n_VIS, n_CLO, n_T3, n_LC, n_SYN, n_SED, &
-  n_AO, n_SKY2, n_SKY3, n_OCC, n_fit, &
+  n_AO, n_AO2, n_SKY2, n_SKY3, n_OCC, n_fit, &
   chi2_SKY, chi2_RV, chi2_TTV, chi2_ECL, chi2_VIS, chi2_CLO, chi2_T3, chi2_LC, chi2_SYN, chi2_SED, &
-  chi2_AO, chi2_SKY2, chi2_SKY3, chi2_OCC, chi2_MASS, chi2
+  chi2_AO, chi2_AO2, chi2_SKY2, chi2_SKY3, chi2_OCC, chi2_MASS, chi2
 close(iu)
 
 chi2_func = chi2

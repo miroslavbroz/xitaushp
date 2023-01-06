@@ -95,6 +95,7 @@ write(*,*) '# chi2_LC   = ', chi2_LC
 write(*,*) '# chi2_SYN  = ', chi2_SYN
 write(*,*) '# chi2_SED  = ', chi2_SED
 write(*,*) '# chi2_AO   = ', chi2_AO
+write(*,*) '# chi2_AO2  = ', chi2_AO2
 write(*,*) '# chi2_SKY2 = ', chi2_SKY2
 write(*,*) '# chi2_SKY3 = ', chi2_SKY3
 write(*,*) '# chi2_OCC  = ', chi2_OCC

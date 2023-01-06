@@ -13,8 +13,10 @@ set yl "y"
 set zl "z"
 set cbl "-"
 
-#set xr [-0.5*tmp:5*tmp]
-#set yr [-0.5*tmp:0.5*tmp]
+tmp=1.5e5
+set xr [-tmp:tmp]
+set yr [-tmp:tmp]
+set zr [-tmp:tmp]
 set cbr [0:]
 
 set view 0,0,1
@@ -22,15 +24,17 @@ set view equal xyz
 set xyplane 0.0
 set palette gray
 
-scl=1
+scl=1.e5
 set arrow from scl*(0+0.00),0,0 to scl*(s1__+0.00),scl*s2__,scl*s3__ front lc 'orange'
 set arrow from scl*(0+0.01),0,0 to scl*(o1__+0.01),scl*o2__,scl*o3__ front lc 'blue'
 
 scl=arcsec*2.13832494981512*au
+scl=1.e5
 
 sp \
   "<./poly.awk output.poly5.01"  u 4:5:6 w l not,\
-  "<./poly.awk output.poly5.01 | awk '($1==14) || (NF==0)'" u 4:5:6 w l lw 3 lc 'black',\
+  "<./minus.awk output.surf5.01 output.poly5.01 | ./poly.awk" u 4:5:6 w l lw 3 lc 'black',\
+  "<awk '(ARGIND==1){ s[$1]=$0; }(ARGIND==2) && (FNR>1){ print s[$1],$0; }' output.centre.01 output.normal.01 | ./minus.awk output.surf.01 -" u 2:3:4:(scl*$6):(scl*$7):(scl*$8) w vectors lw 1 lc 'green' t 'normals',\
 
 pa -1
 

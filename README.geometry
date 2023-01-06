@@ -1,0 +1,42 @@
+
+Variable geometry for the Solar System:
+
+   z
+
+   ^                           
+   |   y                       
+   |  /                        
+   | /                         
+   |/                          
+  -|----------> x (vernal eqx.)
+   |                           
+
+  internal, for numerical integrations
+
+  (x, y) in the ecliptic plane (J2000)
+  x positive towards vernal equinox (Psc)
+  y positive towards l=90 deg (Gem)
+  z positive towards N ecliptic pole (Dra)
+  inertial
+  barycentric
+  right-handed
+  looking from N, planets would orbit counterclockwise
+
+   v, +DE
+
+   ^                  
+   |   w              
+   |  /               
+   | /                
+   |/                 
+  -|----------> u, -RA
+   |                  
+
+  sky-plane, for observations
+  u positive towards -RA
+  v positive towards +DE
+  w positive away from observer
+  left-handed
+
+--
+
