@@ -13,6 +13,7 @@ use read_ao_module
 use read_pnm_module
 use read_ephemeris_module
 use write_pnm_module
+use center_pnm_module
 use rotate_module
 use lc_polygon1_module
 use raytrace_module
@@ -50,6 +51,7 @@ double precision :: xh_interp, yh_interp, zh_interp
 double precision, dimension(NBODMAX,3) :: r_interp
 double precision, dimension(3) :: hatu, hatv, hatw
 double precision :: eps, zeta
+double precision, dimension(2) :: c, c_
 character(len=80) :: str, str_
 
 ! functions
@@ -125,27 +127,40 @@ do i = 1, m_OBS
 
     r_interp(j,:) = (/xh_interp, yh_interp, zh_interp/)
   enddo  ! j
+
 !
 ! observed image
 !
+
   call read_pnm(file_OBS(i), pnm_OBS)
 
   w = size(pnm_OBS,1)
   h = size(pnm_OBS,2)
 
 ! centering
+  c = center_pnm(pnm_OBS, pixel_scale(i))
 
 !
 ! synthetic image; computed with lc_polygon
 !
+
   call lc_polygon1(t_interp, lite, r_interp*au, n_ts, n_to, d_ts*au, d_to*au, &
     lambda_eff(iband), band_eff(iband), calib(iband), mag, i2nd)
 
-! Note: polys5, Phi_e .. lc_polygon module variables
-  call raytrace(polys5, Phi_e, d_to*au, pixel_scale(i), w, h, pnm)
+! Note: polys5, Phi_e, photocentre .. lc_polygon module variables
 
-! scale w. total signal
-!  scl = sum(pnm_OBS)/sum(pnm)
+! centering
+  c_ = photocentre(1:2)/(d_to*au)
+
+  if (debug) then
+    write(*,*) '# c  = ', c/(pixel_scale(i)*arcsec), ' pxl'
+    write(*,*) '# c_ = ', c_/(pixel_scale(i)*arcsec), ' pxl'
+  endif
+
+! raytracing
+  call raytrace(polys5, Phi_e, d_to*au, pixel_scale(i), -c + c_, w, h, pnm)
+
+! scaling
   scl = maxval(pnm_OBS)/maxval(pnm)
   pnm = pnm*scl
 

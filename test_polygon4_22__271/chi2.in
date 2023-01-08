@@ -42,11 +42,7 @@ AO2.dat
 -Sky_angularvelocity.dat
 -Occ.dat
 
-4			! nband number of photometric bands; a list of bands and lightcurve files; 7 .. Johnson V, 15 .. Rc
-  15  Lc_Rc1.dat
-  15  Lc_Rc2.dat
-  15  Lc_Rc3.dat
-  15  Lc_Rc4.dat
+0			! nband number of photometric bands; a list of bands and lightcurve files; 7 .. Johnson V, 15 .. Rc
 
 4                     ! geometry of the system: 0 ... hierarchical ((1+2)+3)+4, 1 ... two pairs ((1+2)+(3+4))+5, 4 ... hierarchical w. P,loge,varpi,lambda, 5 ... twopairs w. dtto
 
@@ -87,4 +83,8 @@ T			! debug integrator?
 
 
 
+  15  Lc_Rc1.dat
+  15  Lc_Rc2.dat
+  15  Lc_Rc3.dat
+  15  Lc_Rc4.dat
 

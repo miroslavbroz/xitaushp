@@ -69,6 +69,7 @@ use polytype_module
 
 type(polystype), dimension(:), pointer, save :: polys1, polys2, polys3, polys4, polys5, polystmp
 double precision, dimension(:), pointer, save :: mu_i, mu_e, f, f_L, Phi_i, Phi_e
+double precision, dimension(3) :: photocentre
 
 contains
 
@@ -134,7 +135,6 @@ integer, dimension(:), pointer, save :: dataset, dataset_
 integer, dimension(:,:), pointer, save :: faces1, faces2
 double precision, dimension(:,:), pointer, save :: nodes1, nodes2
 double precision, dimension(:), pointer, save :: phi1, phi2, phi3
-double precision, dimension(3) :: photocentre
 
 integer, save :: i1st = 0, no = 0
 
@@ -413,6 +413,16 @@ if (debug_polygon) then
   write(*,*) 'V0 = ', V0, ' mag'
 endif
 
+! photocentre
+call centre(polys5, centres)
+photocentre = 0.d0
+do i = 1, size(surf,1)
+  if (dataset_(i).ne.1) exit
+  if (polys5(i)%c.eq.0) cycle
+  photocentre = photocentre + centres(i,:)*Phi_e(i)*surf(i)
+enddo
+photocentre = photocentre/tot
+
 call cpu_time(t2)
 
 ! debugging
@@ -471,16 +481,6 @@ if (debug_polygon) then
     write(10,*) 'o3__ = ', o__(3)
     close(10)
   endif
-
-! photocentre
-  call centre(polys5, centres)
-  photocentre = 0.d0
-  do i = 1, size(surf,1)
-    if (dataset_(i).ne.1) exit
-    if (polys5(i)%c.eq.0) cycle
-    photocentre = photocentre + centres(i,:)*Phi_e(i)*surf(i)
-  enddo
-  photocentre = photocentre/tot
 
   open(unit=10, file='photocentre.dat', status='unknown',access='append')
   if (no.eq.1) then

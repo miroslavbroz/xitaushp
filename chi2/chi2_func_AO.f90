@@ -69,7 +69,6 @@ character(len=80) :: str, str_
 ! functions
 double precision, external :: nula2pi, interp, interp2
 
-!-----------------------------------------------------------------------
 !
 ! read adaptive-optics observations (only 1st time!)
 !
@@ -80,25 +79,17 @@ if (i1st.eq.0) then
   if (debug) then
     write(*,*) "# m_AO = ", m_AO
   endif
-!
+
 ! read Sun ephemeris
-!
   if (m_AO.gt.0) then
     call read_ephemeris("ephemeris_S.dat", N_s, t_s, vardist_s, ecl_s, ecb_s)
-!
+
 ! read shape model
-!
-  call read_bruteforce('bruteforce.in', f_elem, f_face, f_node, rho, unit, P_rot_, Tmin, pole_l_, pole_b_, phi0_)
+    call read_bruteforce('bruteforce.in', f_elem, f_face, f_node, rho, unit, P_rot_, Tmin, pole_l_, pole_b_, phi0_)
 
-!  call read_face(f_face, faces)
-!  call read_node(f_node, nodes)
-
-! unit conversion
-!    nodes = nodes*unit/au
-
+! allocation
     allocate(nodes(size(nodesforchi,1),size(nodesforchi,2)))
     allocate(faces(size(facesforchi,1),size(facesforchi,2)))
-
     allocate(nodes_(size(nodes,1),3))
     allocate(normals(size(faces,1),3))
     allocate(masks(size(faces,1)))
@@ -111,7 +102,6 @@ if (i1st.eq.0) then
 
 endif  ! i1st
 
-!-----------------------------------------------------------------------
 !
 ! calculate the chi^2 value (adaptive-optics data)
 !
@@ -134,7 +124,6 @@ do i = 1, m_AO
     lite = 0.d0
   endif
   t_interp = t_AO(i) + lite
-!  write(*,*) 'lite = ', lite  ! dbg
 
 ! from dependent.inc
   pole_l_ = pole_l(1)
@@ -156,6 +145,7 @@ do i = 1, m_AO
   phi1 = 2.d0*pi*(t_interp-Tmin)/P_rot_ + phi0_
   phi2 = pi/2.d0-pole_b_
   phi3 = pole_l_
+  phase = nula2pi(phi1)/(2.d0*pi)
   call rot_z_nodes(nodes_, phi1)
 
 ! pole direction
@@ -180,7 +170,6 @@ do i = 1, m_AO
   nodes_ = nodes_*(au/(tmp*pc)/pi*180.d0*3600.d0)  ! au -> arcsec
 
 ! save shape (in uvw coordinates; arcsec)
-  phase = nula2pi(phi1)/(2.d0*pi)
   if (debug_swift) then
     write(str,'(i4.4)') i
     str = 'nodes' // trim(str) // '.dat'
@@ -222,22 +211,25 @@ do i = 1, m_AO
 ! observed silhouette
   call read_pnm(file_OBS(i), pnm)
   c_ = 0.d0
-  call silhouette2(pnm, silh_factor, c_/pixel_scale(i), silh_OBS)
+
+  call silhouette2(pnm, silh_factor, c_/pixel_scale(i), silh_OBS, use_multipoint=.true.)
+
   silh_OBS = silh_OBS*pixel_scale(i)  ! pxl -> arcsec
   c_ = center_silh(silh_OBS) - center_silh(silh)
 
   if (debug) then
-    write(*,*) '# c = ', c_/pixel_scale(i), ' pxl'
+    write(*,*) '# c  = ', c_/pixel_scale(i), ' pxl'
   endif
 
-  call silhouette2(pnm, silh_factor, c_/pixel_scale(i), silh_OBS)
+! re-centering
+  call silhouette2(pnm, silh_factor, c_/pixel_scale(i), silh_OBS, use_multipoint=.true.)
   silh_OBS = silh_OBS*pixel_scale(i)
   c_ = center_silh(silh_OBS) - center_silh(silh)
 
   deallocate(pnm)
 
   if (debug) then
-    write(*,*) '# c = ', c_/pixel_scale(i), ' pxl'
+    write(*,*) '# c_ = ', c_/pixel_scale(i), ' pxl'
   endif
 
 ! chi^2

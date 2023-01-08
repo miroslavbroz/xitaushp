@@ -17,6 +17,8 @@ dy=tmp
 
 i=5
 j=7.0
+i=1
+j=1.0
 set xr [-0.75*tmp:(i-1+0.75)*tmp]
 set yr [-0.75*tmp:(j-1+0.75)*tmp]
 
@@ -37,6 +39,7 @@ p \
   "chi2_AO.dat" u ($2+f($6)):($3+g($6)) t "residua" w l lc 'red',\
   "<awk '(FNR>1){ print $0,ARGIND; }' nodes*.dat"  u ($2+f($5)):($3+g($5)) t "shape" w d lc 'gray',\
   "<awk '(FNR==1){ print s; }(FNR>1){ print $0,ARGIND; }' nodes*.silh"  u ($1+f($3)):($2+g($3)) t "synthetic" w l lc 'orange',\
+  "<awk '(FNR==1){ print s; }(FNR>1){ print $0,ARGIND; }' ../../xitaushp_20221225_ADAM/test_polygon4_22__271/nodes*.silh_" u ($1+f($3)):($2+g($3)) t "old o."  w l lc 'cyan',\
   "<awk '(FNR==1){ print s; }(FNR>1){ print $0,ARGIND; }' nodes*.silh_" u ($1+f($3)):($2+g($3)) t "observed"  w l lc 'blue',\
   "<awk '($4<=0) || (NF==0)' poles.dat"  u (h($2,$5)+f($1)):(h($3,$5)+g($1)) t "poles" w lines lc 'green' lw 3,\
   "<awk '($4>=0) || (NF==0)' poles.dat"  u (h($2,$5)+f($1)):(h($3,$5)+g($1)) not       w lines lc 'cyan'  lw 3,\

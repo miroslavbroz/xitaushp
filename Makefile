@@ -89,6 +89,7 @@ obj90 = \
   lc_polygon/shadowing_of_p.o \
   lc_polygon/rotate_of_p.o \
   lc_polygon/lc_polygon1.o \
+  adam/center_pnm.o \
   adam/intersect_AB_l.o \
   adam/inside_polygon.o \
   adam/raytrace.o \

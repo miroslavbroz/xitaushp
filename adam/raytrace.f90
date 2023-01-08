@@ -12,7 +12,7 @@ module raytrace_module
 
 contains
 
-subroutine raytrace(polys, Phi_e, d_to, pixel_scale, w, h, pnm)
+subroutine raytrace(polys, Phi_e, d_to, pixel_scale, c, w, h, pnm)
 
 use const_module
 use polytype_module
@@ -23,11 +23,12 @@ implicit none
 type(polystype), dimension(:), pointer, intent(in) :: polys
 double precision, dimension(:), pointer, intent(in) :: Phi_e
 double precision, intent(in) :: d_to, pixel_scale
+double precision, dimension(2), intent(in) :: c
 integer, intent(in) :: w, h
 double precision, dimension(:,:), pointer, intent(out) :: pnm 
 
 logical :: is_inside
-integer :: i, j, k, l, c
+integer :: i, j, k, l
 double precision :: u, v, du, dv
 double precision, dimension(3) :: hatu, hatv, r
 double precision, dimension(:,:), pointer :: boxes
@@ -75,8 +76,8 @@ hatv = (/0.d0, 1.d0, 0.d0/)
 do i = 1, h
   do j = 1, w
 
-    u = +(dble(j-1)/(w-1)-0.5d0)*w * du
-    v = -(dble(i-1)/(h-1)-0.5d0)*h * dv
+    u = +(dble(j-1)/(w-1)-0.5d0)*w * du + c(1)*d_to
+    v = -(dble(i-1)/(h-1)-0.5d0)*h * dv + c(2)*d_to
     r = u*hatu + v*hatv
     u = r(1)
     v = r(2)
