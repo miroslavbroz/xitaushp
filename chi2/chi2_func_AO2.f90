@@ -40,11 +40,11 @@ double precision, dimension(OUTMAX), save :: t_s, vardist_s, ecl_s, ecb_s
 
 ! internal variables
 double precision, dimension(:,:), pointer :: pnm, pnm_OBS, pnm_res
-integer :: i, j, j1, j2, k, w, h
+integer :: i, j, j1, j2, k, m, w, h
 integer :: i2nd
 integer :: iband
 double precision :: t_interp, lite, l, b
-double precision :: mag, scl, sigma2, chi_
+double precision :: mag, scl, sigma2, chi_, chi
 double precision :: d_ts, d_to
 double precision, dimension(3) :: n_ts, n_to
 double precision :: xh_interp, yh_interp, zh_interp
@@ -52,7 +52,9 @@ double precision, dimension(NBODMAX,3) :: r_interp
 double precision, dimension(3) :: hatu, hatv, hatw
 double precision :: eps, zeta
 double precision, dimension(2) :: c, c_
+double precision :: tmp
 character(len=80) :: str, str_
+integer, parameter :: iu = 15
 
 ! functions
 double precision, external :: interp, interp2, eps_earth
@@ -79,6 +81,18 @@ if (i1st.eq.0) then
 
   i1st = 1
 endif  ! i1st
+
+!
+! calculate the chi^2 value (adaptive-optics data)
+!
+
+chi2 = 0.d0
+n = 0
+
+if (debug) then
+  open(unit=iu, file="chi2_AO2.dat", status="unknown")
+  write(iu,*) "# i & j & k & pnm(j,k) & pnm_OBS(j,k) & sigma [adu] & chi^2"
+endif
 
 j1 = 2
 j2 = 2
@@ -173,21 +187,47 @@ do i = 1, m_OBS
   allocate(pnm_res(w, h))
   pnm_res = 0.d0
 
-  do j = 1, w
-    do k = 1, h
-      if ((pnm(j,k).gt.0.d0).or.(pnm_OBS(j,k).gt.0.d0)) then
-        sigma2 = max(pnm_OBS(j,k), 1.d0)
-        pnm_res(j,k) = pnm(j,k) - pnm_OBS(j,k)
-        chi_ = (pnm(j,k) - pnm_OBS(j,k))**2/sigma2
-        chi2 = chi2 + chi_
-        n = n+1
-      endif
-    enddo
-  enddo
-
-  pnm_res = min(max(pnm_res + 32768.d0, 0.d0), 65535.d0)
+  tmp = silh_factor*maxval(pnm)
+  chi = 0.d0
+  m = 0
 
   if (debug) then
+    write(iu,*) '# t_OBS = ', t_OBS(i)
+    write(iu,*) '# t_interp = ', t_interp
+    write(iu,*) '# lite = ', lite
+    write(iu,*) '# dataset = ', dataset(i)
+    write(iu,*) '# file_OBS = ', trim(file_OBS(i))
+  endif
+
+  do j = 1, w
+    do k = 1, h
+
+      if ((pnm(j,k).gt.0.d0).or.(pnm_OBS(j,k).gt.tmp)) then
+        sigma2 = max(pnm(j,k),pnm_OBS(j,k))
+        chi_ = (pnm(j,k) - pnm_OBS(j,k))**2/sigma2
+        chi = chi  + chi_
+        chi2 = chi2 + chi_
+        pnm_res(j,k) = chi_
+        n = n+1
+        m = m+1
+
+        if (debug) then
+          write(iu,*) i, j, k, pnm(j,k), pnm_OBS(j,k), sqrt(sigma2), chi_
+        endif
+
+      else
+        pnm_res(j,k) = 0.d0
+      endif
+
+    enddo  ! k
+  enddo  ! j
+
+  if (debug) then
+     write(iu,*)
+
+!    pnm_res = min(max(pnm_res + 32768.d0, 0.d0), 65535.d0)
+!    scl = 65535.d0/maxval(pnm_res); pnm_res = scl*pnm_res
+
     write(str_,'(i4.4)') i
     str = 'output.' // trim(str_) // '.syn.pnm'
     call write_pnm(str, pnm)
@@ -204,6 +244,10 @@ do i = 1, m_OBS
   deallocate(pnm_res)
 
 enddo  ! i
+
+if (debug) then
+  close(iu)
+endif
 
 return
 end subroutine chi2_func_AO2

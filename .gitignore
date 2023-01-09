@@ -12,6 +12,7 @@
 # binary files
 main/chi2
 main/shapesimplex
+main/shapesubplex
 
 # debugging data files
 out_JDATE_*.dat
@@ -21,6 +22,7 @@ chi2_func.tmp
 arcsec_AU.dat
 closurephase.dat
 duration.dat
+ephemeris.tmp
 lightcurve.dat
 limbdark.dat
 minima.dat

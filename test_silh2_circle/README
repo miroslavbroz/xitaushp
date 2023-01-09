@@ -1,3 +1,4 @@
 
 Problem: This silhouette is offset by +0.5,-0.5 pixels wrt. PNM.
+(See also the comment in silhouette.f90.)
 

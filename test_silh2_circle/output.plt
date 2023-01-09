@@ -29,11 +29,12 @@ h=256
 
 p \
   "input.png" binary filetype=png origin=(-0.5*w+0.5,-0.5*h+0.5) with rgbimage not,\
-  "output.silh" u ($1/pixel_scale+c1):($2/pixel_scale+c2) w l lc 'red' lw 1 not,\
+  "output.silh" u ($1/pixel_scale+c1):($2/pixel_scale+c2) w l lc 'red' lw 1 t "nearest-neighbor",\
+  "output.silh_" u ($1/pixel_scale+c1):($2/pixel_scale+c2) w l lc 'green' lw 1 t "multipoint",\
 
 pa -1
 
-set term png small size 1024,1024
+set term png small size 2048,2048
 set out "output.png"
 rep
 
