@@ -222,7 +222,7 @@ do i = 1, m_OBS
     enddo  ! k
   enddo  ! j
 
-  if (debug) then
+  if (debug_swift) then
      write(iu,*)
 
 !    pnm_res = min(max(pnm_res + 32768.d0, 0.d0), 65535.d0)

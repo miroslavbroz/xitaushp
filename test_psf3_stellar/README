@@ -1,0 +1,7 @@
+
+Stellar PSF from 19Fortuna_20180107_PSF_zpl_science_imaging_cam1.fits.
+
+Clipped, converted to 16-bit PNM.
+
+Beware, output.0001.obs.pnm is DECONVOLVED, but we shoud compare to RAW!
+
