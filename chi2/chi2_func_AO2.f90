@@ -80,15 +80,8 @@ if (i1st.eq.0) then
     call read_ephemeris("ephemeris_S.dat", N_s, t_s, vardist_s, ecl_s, ecb_s)
   endif
 
-! point-spread function
-  allocate(psf(16,16))
+  allocate(psf(16, 16))
   allocate(psf_(size(psf,1),size(psf,2)))
-
-  call psf_gauss(psf_param(1), psf)
-!  call psf_moffat(psf_param(1), psf_param(2), psf)
-
-  psf_ = psf/maxval(psf)*65535.d0
-  call write_pnm("psf.pnm", psf_)
 
   i1st = 1
 endif  ! i1st
@@ -185,7 +178,10 @@ do i = 1, m_OBS
 ! raytracing
   call raytrace(polys5, Phi_e, d_to*au, pixel_scale(i), -c + c_, w, h, pnm)
 
-! convolution
+! psf
+!  call psf_gauss(psf_param(1), psf)
+  call psf_moffat(psf_param(1), psf_param(2), psf)
+
   allocate(pnm_psf(w, h))
   call convolve(pnm, psf, pnm_psf)
 
@@ -216,7 +212,8 @@ do i = 1, m_OBS
   do j = 1, w
     do k = 1, h
 
-      if ((pnm_psf(j,k).gt.0.d0).or.(pnm_OBS(j,k).gt.tmp)) then
+      if ((pnm_psf(j,k).gt.tmp).or.(pnm_OBS(j,k).gt.tmp)) then
+
         sigma2 = max(pnm_psf(j,k),pnm_OBS(j,k))
         chi_ = (pnm_psf(j,k) - pnm_OBS(j,k))**2/sigma2
         chi = chi  + chi_
@@ -239,10 +236,9 @@ do i = 1, m_OBS
   if (debug_swift) then
     write(iu,*)
 
-    pnm = pnm*scl
-
     write(str_,'(i4.4)') i
     str = 'output.' // trim(str_) // '.syn.pnm'
+    pnm = pnm*scl
     call write_pnm(str, pnm)
 
     str = 'output.' // trim(str_) // '.psf.pnm'
@@ -253,6 +249,9 @@ do i = 1, m_OBS
 
     str = 'output.' // trim(str_) // '.res.pnm'
     call write_pnm(str, pnm_res)
+
+    psf_ = psf/maxval(psf)*65535.d0
+    call write_pnm("psf.pnm", psf_)
   endif
 
   deallocate(pnm)

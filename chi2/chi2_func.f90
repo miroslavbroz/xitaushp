@@ -101,6 +101,11 @@ do i = 1, 4
 enddo
 scattering(4) = scattering(4)*deg  ! bartheta
 
+do i = 1, 2
+  j = j+1
+  psf_param(i) = x_param(j)
+enddo
+
 if (j.ne.nparam) then
   write(*,*) "chi2_func.f: Error number of parameters is ", j, ".ne.nparam = ", nparam
   stop
