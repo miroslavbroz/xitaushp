@@ -93,6 +93,8 @@ obj90 = \
   adam/intersect_AB_l.o \
   adam/inside_polygon.o \
   adam/raytrace.o \
+  psf/psf.o \
+  psf/convolve.o \
   chi2/read_ephemeris.o \
   chi2/write_poles.o \
   chi2/read_AO.o \

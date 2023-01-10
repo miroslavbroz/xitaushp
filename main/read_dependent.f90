@@ -179,6 +179,12 @@ write(*,*) "# spectral_slope : "
 read(*,*,err=990,end=990) spectral_slope
 write(*,*) "# spectral_slope = ", spectral_slope
 
+write(*,*) "# psf_param(2) : "
+read(*,*,err=990,end=990) (psf_param(i), i = 1,2)
+do i = 1, 2
+  write(*,*) "# psf_param(", i, ") = ", psf_param(i)
+enddo
+
 write(*,*) "# nsub : "
 read(*,*,err=990,end=990) nsub
 write(*,*) "# nsub = ", nsub

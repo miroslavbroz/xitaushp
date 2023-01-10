@@ -17,6 +17,8 @@ use center_pnm_module
 use rotate_module
 use lc_polygon1_module
 use raytrace_module
+use psf_module
+use convolve_module
 
 implicit none
 include '../filters/filters.inc'
@@ -29,20 +31,20 @@ double precision, dimension(OUTMAX,NBODMAX,3), intent(in) :: rh, vh
 double precision, intent(out) :: chi2
 integer, intent(out) :: n
 
-! observational data
+! observational
 integer, save :: m_OBS = 0
 integer, dimension(AOMAX), save :: dataset
 double precision, dimension(AOMAX), save :: t_OBS, sigma, pixel_scale, vardist, ecl, ecb
 character(len=255), dimension(AOMAX), save :: file_OBS
-
 integer, save :: N_s
 double precision, dimension(OUTMAX), save :: t_s, vardist_s, ecl_s, ecb_s
 
-! internal variables
-double precision, dimension(:,:), pointer :: pnm, pnm_OBS, pnm_res
+! temporary
 integer :: i, j, j1, j2, k, m, w, h
 integer :: i2nd
 integer :: iband
+double precision, dimension(:,:), pointer :: pnm, pnm_OBS, pnm_res, pnm_psf
+double precision, dimension(:,:), pointer, save :: psf, psf_
 double precision :: t_interp, lite, l, b
 double precision :: mag, scl, sigma2, chi_, chi
 double precision :: d_ts, d_to
@@ -55,11 +57,10 @@ double precision, dimension(2) :: c, c_
 double precision :: tmp
 character(len=80) :: str, str_
 integer, parameter :: iu = 15
+integer, save :: i1st = 0
 
 ! functions
 double precision, external :: interp, interp2, eps_earth
-
-integer, save :: i1st = 0
 
 if (.not.use_adam) return
 
@@ -78,6 +79,16 @@ if (i1st.eq.0) then
   if (m_OBS.gt.0) then
     call read_ephemeris("ephemeris_S.dat", N_s, t_s, vardist_s, ecl_s, ecb_s)
   endif
+
+! point-spread function
+  allocate(psf(16,16))
+  allocate(psf_(size(psf,1),size(psf,2)))
+
+  call psf_gauss(psf_param(1), psf)
+!  call psf_moffat(psf_param(1), psf_param(2), psf)
+
+  psf_ = psf/maxval(psf)*65535.d0
+  call write_pnm("psf.pnm", psf_)
 
   i1st = 1
 endif  ! i1st
@@ -158,10 +169,10 @@ do i = 1, m_OBS
 ! synthetic image; computed with lc_polygon
 !
 
+! Note: polys5, Phi_e, photocentre ... lc_polygon module variables
+
   call lc_polygon1(t_interp, lite, r_interp*au, n_ts, n_to, d_ts*au, d_to*au, &
     lambda_eff(iband), band_eff(iband), calib(iband), mag, i2nd)
-
-! Note: polys5, Phi_e, photocentre .. lc_polygon module variables
 
 ! centering
   c_ = photocentre(1:2)/(d_to*au)
@@ -174,20 +185,23 @@ do i = 1, m_OBS
 ! raytracing
   call raytrace(polys5, Phi_e, d_to*au, pixel_scale(i), -c + c_, w, h, pnm)
 
+! convolution
+  allocate(pnm_psf(w, h))
+  call convolve(pnm, psf, pnm_psf)
+
 ! scaling
-  scl = maxval(pnm_OBS)/maxval(pnm)
-  pnm = pnm*scl
+  scl = maxval(pnm_OBS)/maxval(pnm_psf)
+  pnm_psf = pnm_psf*scl
 
   if (debug) then
     write(*,*) '# scl = ', scl
   endif
-!
-! chi^2 computation
-!
+
+! chi^2
   allocate(pnm_res(w, h))
   pnm_res = 0.d0
 
-  tmp = silh_factor*maxval(pnm)
+  tmp = silh_factor*maxval(pnm_OBS)
   chi = 0.d0
   m = 0
 
@@ -202,9 +216,9 @@ do i = 1, m_OBS
   do j = 1, w
     do k = 1, h
 
-      if ((pnm(j,k).gt.0.d0).or.(pnm_OBS(j,k).gt.tmp)) then
-        sigma2 = max(pnm(j,k),pnm_OBS(j,k))
-        chi_ = (pnm(j,k) - pnm_OBS(j,k))**2/sigma2
+      if ((pnm_psf(j,k).gt.0.d0).or.(pnm_OBS(j,k).gt.tmp)) then
+        sigma2 = max(pnm_psf(j,k),pnm_OBS(j,k))
+        chi_ = (pnm_psf(j,k) - pnm_OBS(j,k))**2/sigma2
         chi = chi  + chi_
         chi2 = chi2 + chi_
         pnm_res(j,k) = chi_
@@ -223,14 +237,16 @@ do i = 1, m_OBS
   enddo  ! j
 
   if (debug_swift) then
-     write(iu,*)
+    write(iu,*)
 
-!    pnm_res = min(max(pnm_res + 32768.d0, 0.d0), 65535.d0)
-!    scl = 65535.d0/maxval(pnm_res); pnm_res = scl*pnm_res
+    pnm = pnm*scl
 
     write(str_,'(i4.4)') i
     str = 'output.' // trim(str_) // '.syn.pnm'
     call write_pnm(str, pnm)
+
+    str = 'output.' // trim(str_) // '.psf.pnm'
+    call write_pnm(str, pnm_psf)
 
     str = 'output.' // trim(str_) // '.obs.pnm'
     call write_pnm(str, pnm_OBS)
@@ -242,6 +258,7 @@ do i = 1, m_OBS
   deallocate(pnm)
   deallocate(pnm_OBS)
   deallocate(pnm_res)
+  deallocate(pnm_psf)
 
 enddo  ! i
 

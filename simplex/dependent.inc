@@ -39,6 +39,7 @@
       real*8 pyterpol_Delta(4)
       real*8 silh_factor
       real*8 spectral_slope
+      real*8 psf_param(2)
       real*8 eps_BS
 
       character*80 file_SKY(NBODMAX), file_TTV, file_RV(NBODMAX),       &
@@ -51,7 +52,7 @@
       logical use_vardist, use_varpole, use_multipole, use_bruteforce
       logical use_oblat, use_tides, use_tides2, use_ppn
       logical use_polygon, use_zero
-      logical use_adam
+      logical use_adam, use_stellar
       logical is_forward
       logical debug, debug_swift
 
@@ -83,6 +84,7 @@
      &  pyterpol_Delta,                                                 &
      &  silh_factor,                                                    &
      &  spectral_slope,                                                 &
+     &  psf_param,                                                      &
      &  eps_BS,                                                         &
      &  nodesforchi, facesforchi,                                       &
      &  file_SKY, file_TTV, file_RV, file_ECL, file_VIS, file_CLO,      &
@@ -98,7 +100,7 @@
      &  use_vardist, use_varpole, use_multipole, use_bruteforce,        &
      &  use_oblat, use_tides, use_tides2, use_ppn,                      &
      &  use_polygon, use_zero,                                          &
-     &  use_adam,                                                       &
+     &  use_adam, use_stellar,                                          &
      &  is_forward,                                                     &
      &  debug, debug_swift
 
