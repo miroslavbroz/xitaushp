@@ -94,7 +94,14 @@ obj90 = \
   adam/inside_polygon.o \
   adam/raytrace.o \
   psf/psf.o \
+  psf/wrap.o \
+  psf/nrtype.o \
+  psf/nrutil.o \
+  psf/fourrow.o \
+  psf/four2.o \
+  psf/realft2.o \
   psf/convolve.o \
+  psf/convolve_fft.o \
   chi2/read_ephemeris.o \
   chi2/write_poles.o \
   chi2/read_AO.o \

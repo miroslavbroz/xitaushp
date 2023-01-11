@@ -18,6 +18,11 @@ double complex, dimension(:,:), allocatable :: spec, spec_psf
 double complex, dimension(:), allocatable :: speq, speq_psf
 double precision :: tmp
 
+if ((size(a,1).ne.size(psf,1)).or.(size(a,2).ne.size(psf,2))) then
+  write(*,*) 'convolve_fft: Error sizes of a, psf do not match!'
+  stop
+endif
+
 allocate(spec(size(a,1)/2, size(a,2)))
 allocate(speq(size(a,2)))
 allocate(spec_psf(size(psf,1)/2, size(psf,2)))

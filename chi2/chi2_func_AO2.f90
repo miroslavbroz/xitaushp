@@ -18,7 +18,8 @@ use rotate_module
 use lc_polygon1_module
 use raytrace_module
 use psf_module
-use convolve_module
+use wrap_module
+use convolve_fft_module
 
 implicit none
 include '../filters/filters.inc'
@@ -80,8 +81,10 @@ if (i1st.eq.0) then
     call read_ephemeris("ephemeris_S.dat", N_s, t_s, vardist_s, ecl_s, ecb_s)
   endif
 
-  allocate(psf(16, 16))
-  allocate(psf_(size(psf,1),size(psf,2)))
+  if (use_stellar) then
+    call read_pnm("stellar.pnm", psf)
+    psf = psf/sum(psf)
+  endif
 
   i1st = 1
 endif  ! i1st
@@ -179,11 +182,15 @@ do i = 1, m_OBS
   call raytrace(polys5, Phi_e, d_to*au, pixel_scale(i), -c + c_, w, h, pnm)
 
 ! psf
-!  call psf_gauss(psf_param(1), psf)
-  call psf_moffat(psf_param(1), psf_param(2), psf)
+  if (.not.use_stellar) then
+    allocate(psf(w, h))
+    call psf_moffat(psf_param(1), psf_param(2), psf)
+  endif
 
+  allocate(psf_(w, h))
+  call wrap(psf, psf_)
   allocate(pnm_psf(w, h))
-  call convolve(pnm, psf, pnm_psf)
+  call convolve_fft(pnm, psf_, pnm_psf)
 
 ! scaling
   scl = maxval(pnm_OBS)/maxval(pnm_psf)
@@ -258,6 +265,8 @@ do i = 1, m_OBS
   deallocate(pnm_OBS)
   deallocate(pnm_res)
   deallocate(pnm_psf)
+  if (.not.use_stellar) deallocate(psf)
+  deallocate(psf_)
 
 enddo  ! i
 
