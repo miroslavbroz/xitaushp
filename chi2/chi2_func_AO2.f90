@@ -181,9 +181,9 @@ do i = 1, m_OBS
 
 ! raytracing
   if (use_cliptrace) then
-    call raytrace(polys5, Phi_e, d_to*au, pixel_scale(i), -c + c_, w, h, pnm)
-  else
     call cliptrace(polys5, Phi_e, normals, d_to*au, pixel_scale(i), -c + c_, w, h, pnm)
+  else
+    call raytrace(polys5, Phi_e, d_to*au, pixel_scale(i), -c + c_, w, h, pnm)
   endif
 
 ! psf
