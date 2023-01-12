@@ -69,6 +69,7 @@ use polytype_module
 
 type(polystype), dimension(:), pointer, save :: polys1, polys2, polys3, polys4, polys5, polystmp
 double precision, dimension(:), pointer, save :: mu_i, mu_e, f, f_L, Phi_i, Phi_e
+double precision, dimension(:,:), pointer, save :: normals, centres
 double precision, dimension(3) :: photocentre
 
 contains
@@ -115,7 +116,6 @@ integer, intent(inout) :: i2nd
 integer, dimension(:,:), pointer, save :: faces
 double precision, dimension(:,:), pointer, save :: nodes, orignodes
 
-double precision, dimension(:,:), pointer, save :: normals, centres
 double precision, dimension(:), pointer, save :: surf
 double precision, dimension(:), pointer, save :: I_lambda
 integer, dimension(:), pointer, save :: clips

@@ -6,7 +6,7 @@ f77 = gfortran
 f90 = gfortran
 cc = g++
 
-opt = -O3 -pg -mcmodel=large -Jmod 
+opt = -O3 -pg -mcmodel=large -Jmod
 
 lib = -L. -lstdc++
 
@@ -93,6 +93,7 @@ obj90 = \
   adam/intersect_AB_l.o \
   adam/inside_polygon.o \
   adam/raytrace.o \
+  adam/cliptrace.o \
   psf/psf.o \
   psf/wrap.o \
   psf/nrtype.o \
@@ -114,6 +115,7 @@ obj90 = \
 
 objc = \
   lc_polygon/clip_in_c.o \
+  adam/crop_in_c.o \
   clipper2/clipper.engine.o \
 
 inc = \
@@ -139,7 +141,7 @@ $(obj) : %.o:%.f $(inc)
 	$(f77) $(opt) -c -o $@ $<
 
 $(objc) : %.o:%.cpp $(inc)
-	$(cc) $(opt) -c -o $@ $<
+	$(cc) $(opt) -std=c++17 -c -o $@ $<
 
 clean : FORCE
 	rm -f mod/*.mod

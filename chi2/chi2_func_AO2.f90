@@ -17,6 +17,7 @@ use center_pnm_module
 use rotate_module
 use lc_polygon1_module
 use raytrace_module
+use cliptrace_module
 use psf_module
 use wrap_module
 use convolve_fft_module
@@ -165,7 +166,7 @@ do i = 1, m_OBS
 ! synthetic image; computed with lc_polygon
 !
 
-! Note: polys5, Phi_e, photocentre ... lc_polygon module variables
+! Note: polys5, Phi_e, normals, photocentre ... lc_polygon module variables
 
   call lc_polygon1(t_interp, lite, r_interp*au, n_ts, n_to, d_ts*au, d_to*au, &
     lambda_eff(iband), band_eff(iband), calib(iband), mag, i2nd)
@@ -179,7 +180,11 @@ do i = 1, m_OBS
   endif
 
 ! raytracing
-  call raytrace(polys5, Phi_e, d_to*au, pixel_scale(i), -c + c_, w, h, pnm)
+  if (use_cliptrace) then
+    call raytrace(polys5, Phi_e, d_to*au, pixel_scale(i), -c + c_, w, h, pnm)
+  else
+    call cliptrace(polys5, Phi_e, normals, d_to*au, pixel_scale(i), -c + c_, w, h, pnm)
+  endif
 
 ! psf
   if (.not.use_stellar) then

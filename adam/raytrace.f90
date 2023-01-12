@@ -50,10 +50,10 @@ call boundingbox(polys, boxes)
 ! of-pnm
 du = pixel_scale*arcsec*d_to
 dv = du
-box2(1) = -0.5*w*du
-box2(2) = +0.5*w*du
-box2(3) = -0.5*h*dv
-box2(4) = +0.5*h*dv
+box2(1) = -0.5d0*w*du
+box2(2) = +0.5d0*w*du
+box2(3) = -0.5d0*h*dv
+box2(4) = +0.5d0*h*dv
 
 ! over-all
 box1 = (/+INF, -INF, +INF, -INF, +INF, -INF/)

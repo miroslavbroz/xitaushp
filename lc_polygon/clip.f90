@@ -11,7 +11,6 @@ subroutine clip(polys2, polys3, clips)
 use iso_c_binding
 use polytype_module
 use boundingbox_module
-use revert_module
 
 implicit none
 

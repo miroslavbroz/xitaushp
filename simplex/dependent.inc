@@ -52,7 +52,7 @@
       logical use_vardist, use_varpole, use_multipole, use_bruteforce
       logical use_oblat, use_tides, use_tides2, use_ppn
       logical use_polygon, use_zero
-      logical use_adam, use_stellar
+      logical use_adam, use_stellar, use_cliptrace
       logical is_forward
       logical debug, debug_swift
 
@@ -100,7 +100,7 @@
      &  use_vardist, use_varpole, use_multipole, use_bruteforce,        &
      &  use_oblat, use_tides, use_tides2, use_ppn,                      &
      &  use_polygon, use_zero,                                          &
-     &  use_adam, use_stellar,                                          &
+     &  use_adam, use_stellar, use_cliptrace,                           &
      &  is_forward,                                                     &
      &  debug, debug_swift
 

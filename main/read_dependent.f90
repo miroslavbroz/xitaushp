@@ -244,6 +244,9 @@ write(*,*) "# use_adam = ", use_adam
 read(*,*,err=990,end=990) use_stellar
 write(*,*) "# use_stellar = ", use_stellar
 
+read(*,*,err=990,end=990) use_cliptrace
+write(*,*) "# use_cliptrace = ", use_cliptrace
+
 write(*,*) "# w_SKY w_RV w_TTV w_ECL w_VIS w_CLO w_T3 w_LC w_SYN w_SED w_AO w_AO2, w_SKY2 w_SKY3 w_OCC : "
 read(*,*,err=990,end=990) w_SKY, w_RV, w_TTV, w_ECL, w_VIS, w_CLO, w_T3, w_LC, w_SYN, w_SED, w_AO, w_AO2, w_SKY2, w_SKY3, w_OCC
 write(*,*) "# w_SKY = ", w_SKY
