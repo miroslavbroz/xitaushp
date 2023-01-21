@@ -73,6 +73,7 @@ obj90 = \
   lc_polygon/revert.o \
   lc_polygon/clip.o \
   lc_polygon/hapke.o \
+  lc_polygon/geometric.o \
   lc_polygon/lambert.o \
   lc_polygon/lommel.o \
   lc_polygon/planck.o \
@@ -119,8 +120,8 @@ objc = \
   clipper2/clipper.engine.o \
 
 inc = \
-  simplex/simplex.inc \
-  simplex/dependent.inc \
+  chi2/chi2.inc \
+  chi2/dependent.inc \
   filters/filters.inc \
 
 all: main/chi2 main/shapesimplex main/shapesubplex

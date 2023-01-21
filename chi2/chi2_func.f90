@@ -29,8 +29,8 @@ use chi2_func_AO2_module
 use chi2_func_LC2_module
 
 implicit none
-include '../simplex/simplex.inc'
-include '../simplex/dependent.inc'
+include 'chi2.inc'
+include 'dependent.inc'
 
 double precision, dimension(ndim) :: x
 
@@ -181,7 +181,12 @@ endif
 
 ! subdivide several times
 
-if (nsub.eq.1) then
+if (nsub.eq.0) then
+  allocate(nodesforchi(size(nodes2,1),size(nodes2,2)))
+  allocate(facesforchi(size(faces2,1),size(faces2,2)))
+  nodesforchi = nodes2
+  facesforchi = faces2
+else if (nsub.eq.1) then
   call subdivide(nodes2, faces2, nodesforchi, facesforchi)
 else if (nsub.eq.2) then
   call subdivide(nodes2, faces2, nodes3, faces3)
@@ -247,12 +252,12 @@ chi2_func = chi2
 
 deallocate(nodesforchi)
 deallocate(facesforchi)
-if (nsub.eq.2) deallocate(nodes3)
-if (nsub.eq.2) deallocate(faces3)
-if (nsub.eq.3) deallocate(nodes4)
-if (nsub.eq.3) deallocate(faces4)
-if (nsub.eq.4) deallocate(nodes5)
-if (nsub.eq.4) deallocate(faces5)
+if (nsub.ge.2) deallocate(nodes3)
+if (nsub.ge.2) deallocate(faces3)
+if (nsub.ge.3) deallocate(nodes4)
+if (nsub.ge.3) deallocate(faces4)
+if (nsub.ge.4) deallocate(nodes5)
+if (nsub.ge.4) deallocate(faces5)
 
 return
 end function chi2_func

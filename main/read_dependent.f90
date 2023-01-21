@@ -10,8 +10,8 @@ subroutine read_dependent()
 
 implicit none
 include "../filters/filters.inc"
-include "../simplex/simplex.inc"
-include "../simplex/dependent.inc"
+include "../chi2/chi2.inc"
+include "../chi2/dependent.inc"
 
 integer i
 

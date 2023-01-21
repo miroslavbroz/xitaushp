@@ -2,7 +2,7 @@
       REAL*8 FUNCTION amotry(p,y,psum,mp,np,ndim,funk,ihi,fac)
 
       implicit none
-      include 'simplex.inc'
+      include '../chi2/chi2.inc'
       INTEGER ihi,mp,ndim,np
       REAL*8 fac,p(mp,np),psum(np),y(mp),funk
       EXTERNAL funk

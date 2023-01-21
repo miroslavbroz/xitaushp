@@ -8,8 +8,8 @@ use read_dependent_module
 use chi2_func_module
 
 implicit none
-include '../simplex/simplex.inc'
-include '../simplex/dependent.inc'
+include '../chi2/chi2.inc'
+include '../chi2/dependent.inc'
 
 double precision :: ftol, itmax
 double precision, dimension(NDIMMAX) :: x, e, e_param

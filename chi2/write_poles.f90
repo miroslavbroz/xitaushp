@@ -9,8 +9,8 @@ contains
 subroutine write_poles(t, ecl, ecb, l, b, vardist, dataset)
 
 implicit none
-include '../simplex/simplex.inc'
-include '../simplex/dependent.inc'
+include 'chi2.inc'
+include 'dependent.inc'
 
 integer :: dataset
 double precision :: t, ecl, ecb, l, b, vardist

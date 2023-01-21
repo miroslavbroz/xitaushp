@@ -2,7 +2,7 @@
       SUBROUTINE amoeba(p,y,mp,np,ndim,ftol,funk,iter,itmax)
 
       implicit none
-      include 'simplex.inc'
+      include '../chi2/chi2.inc'
       INTEGER iter,itmax,mp,ndim,np
       REAL*8 ftol,p(mp,np),y(mp),funk,TINY
       PARAMETER (TINY=1.d-10) ! Maximum allowed dimensions and function

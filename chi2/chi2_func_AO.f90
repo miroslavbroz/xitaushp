@@ -26,8 +26,8 @@ use shadowing_module
 use silhouette_module
 
 implicit none
-include '../simplex/simplex.inc'
-include '../simplex/dependent.inc'
+include 'chi2.inc'
+include 'dependent.inc'
 
 ! input
 

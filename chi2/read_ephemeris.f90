@@ -12,8 +12,8 @@ use const_module
 use rotate_module
 
 implicit none
-include '../simplex/simplex.inc'
-include '../simplex/dependent.inc'
+include 'chi2.inc'
+include 'dependent.inc'
 
 character(len=*), intent(in) :: filename
 integer, intent(out) :: n

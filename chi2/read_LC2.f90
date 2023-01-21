@@ -11,8 +11,8 @@ subroutine read_LC2(filename, n, t, mag, sigma_mag, vardist, l, b, dataset)
 use read_ephemeris_module
 
 implicit none
-include '../simplex/simplex.inc'
-include '../simplex/dependent.inc'
+include 'chi2.inc'
+include 'dependent.inc'
 
 character(len=*), intent(in) :: filename
 integer, intent(out) :: n

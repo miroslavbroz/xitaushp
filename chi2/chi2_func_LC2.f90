@@ -14,9 +14,9 @@ use read_ephemeris_module
 use lc_polygon1_module
 
 implicit none
+include 'chi2.inc'
+include 'dependent.inc'
 include '../filters/filters.inc'
-include '../simplex/simplex.inc'
-include '../simplex/dependent.inc'
 
 integer, intent(in) :: NOUT
 double precision, dimension(OUTMAX), intent(in) :: tout
